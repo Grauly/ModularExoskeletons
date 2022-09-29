@@ -8,14 +8,16 @@ import net.minecraft.sound.SoundEvents;
 
 public class ExoArmorMaterial implements ArmorMaterial {
 
+    private static final int[] PROTECTION_VALUES = new int[] {1, 2, 3, 1};
+
     @Override
     public int getDurability(EquipmentSlot slot) {
-        return 512;
+        return -1;
     }
 
     @Override
     public int getProtectionAmount(EquipmentSlot slot) {
-        return 5;
+        return PROTECTION_VALUES[slot.getEntitySlotId()];
     }
 
     @Override
@@ -40,11 +42,11 @@ public class ExoArmorMaterial implements ArmorMaterial {
 
     @Override
     public float getToughness() {
-        return 3;
+        return 0;
     }
 
     @Override
     public float getKnockbackResistance() {
-        return 2;
+        return 0;
     }
 }
