@@ -19,7 +19,7 @@ public interface ModularItem<M extends Module> {
                 try {
                     modules.add((M) module);
                 } catch (ClassCastException e) {
-                    ModularExos.LOGGER.warn("Invalid Module Read, discarding it.");
+                    ModularExos.LOGGER.warn("Invalid Module Read, ignoring it.");
                 }
             }
         }
