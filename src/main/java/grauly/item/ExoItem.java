@@ -7,4 +7,6 @@ public class ExoItem extends Item {
     public ExoItem(Settings settings) {
         super(settings);
     }
+
+
 }
