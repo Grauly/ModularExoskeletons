@@ -6,7 +6,7 @@
   "name": "Modular Exoskeletons",
   "description": "Provides the player with modular Exoskeletons",
   "authors": [
-    "Me!"
+    "Grauly"
   ],
   "contact": {
     "homepage": "https://fabricmc.net/",
@@ -14,7 +14,7 @@
   },
 
   "license": "MIT",
-  "icon": "assets/modid/icon.png",
+  "icon": "assets/modularexos/icon.png",
 
   "environment": "*",
   "entrypoints": {
@@ -36,6 +36,6 @@
     "java": ">=17"
   },
   "suggests": {
-    "another-mod": "*"
+
   }
 }

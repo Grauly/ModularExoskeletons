@@ -3,6 +3,7 @@ package grauly.item;
 import dev.emi.trinkets.api.TrinketItem;
 import grauly.modules.ExoModule;
 import grauly.modules.ModularItem;
+import java.util.ArrayList;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
