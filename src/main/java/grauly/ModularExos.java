@@ -1,6 +1,8 @@
 package grauly;
 
+import grauly.block.AllBlocks;
 import grauly.item.AllItems;
+import grauly.screen.AllScreenHandlers;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.minecraft.item.ItemGroup;
@@ -12,7 +14,6 @@ import org.slf4j.LoggerFactory;
 public class ModularExos implements ModInitializer {
 	public static final String MODID = "modularexos";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MODID);
-
 	public static final ItemGroup EXO_GROUP = FabricItemGroupBuilder
 			.create(new Identifier(ModularExos.MODID,"exo_group"))
 			.icon(() -> new ItemStack(AllItems.EXO_ITEM))
@@ -20,6 +21,8 @@ public class ModularExos implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		AllItems.register();
+		new AllBlocks().register();
+		new AllItems().register();
+		new AllScreenHandlers().register();
 	}
 }

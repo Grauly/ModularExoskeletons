@@ -1,4 +1,4 @@
-package grauly.modules;
+package grauly.modules.base;
 
 public interface Module {
     int getSlotCost();

@@ -1,6 +1,6 @@
 package grauly.item;
 
-import grauly.modules.ExoModule;
+import grauly.modules.exo.ExoModule;
 import net.minecraft.item.Item;
 
 public class ExampleModule extends Item implements ExoModule {
@@ -11,12 +11,12 @@ public class ExampleModule extends Item implements ExoModule {
 
     @Override
     public int getArmor() {
-        return 0;
+        return 1;
     }
 
     @Override
     public int getToughness() {
-        return 0;
+        return 1;
     }
 
     @Override

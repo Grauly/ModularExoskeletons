@@ -1,4 +1,4 @@
-package grauly.modules;
+package grauly.modules.base;
 
 import grauly.ModularExos;
 import grauly.util.Constants;
@@ -11,6 +11,10 @@ import java.util.ArrayList;
 
 public interface ModularItem<M extends Module> {
 
+    ArrayList<M> getAllowedModules();
+    void addAllowedModule(M module);
+
+
     default ArrayList<M> getInstalledModules(ItemStack stack) {
         ArrayList<M> modules = new ArrayList<>();
         ArrayList<ItemStack> stackModuleList = deserializeModules(stack);
@@ -19,7 +23,7 @@ public interface ModularItem<M extends Module> {
                 try {
                     modules.add((M) module);
                 } catch (ClassCastException e) {
-                    ModularExos.LOGGER.warn("Invalid Module Read, ignoring it.");
+                    ModularExos.LOGGER.debug("Invalid Module Read, ignoring it.");
                 }
             }
         }
