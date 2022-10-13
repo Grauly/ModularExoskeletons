@@ -24,5 +24,6 @@ public class ModularExos implements ModInitializer {
 		new AllBlocks().register();
 		new AllItems().register();
 		new AllScreenHandlers().register();
+		AllItems.EXO_ITEM.addAllowedModule(AllItems.EX_MODULE);
 	}
 }

@@ -16,11 +16,12 @@ import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+
 public class ModificationTableScreenHandler extends ScreenHandler {
 
     protected CraftingResultInventory output = new CraftingResultInventory();
     protected Inventory moduleInput = new SimpleInventory(15) {
-
         @Override
         public void markDirty() {
             super.markDirty();
@@ -28,15 +29,14 @@ public class ModificationTableScreenHandler extends ScreenHandler {
         }
     };
     protected Inventory modularItemInput = new SimpleInventory(1) {
-
         @Override
         public void markDirty() {
             super.markDirty();
             ModificationTableScreenHandler.this.onModularItemChanged(this);
         }
     };
-
     private final ScreenHandlerType<?> type;
+    private final ArrayList<ModuleSlot> moduleSlots = new ArrayList<>();
 
     public ModificationTableScreenHandler(int syncId, PlayerInventory inventory) {
         this(AllScreenHandlers.MODIFICATION_TABLE_SCREEN_HANDLER, syncId, inventory);
@@ -49,7 +49,9 @@ public class ModificationTableScreenHandler extends ScreenHandler {
         this.addSlot(new ModularItemSlot(modularItemInput,0,26,34));
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 5; j++) {
-                this.addSlot(new ModuleSlot(moduleInput,j + i * 5,71 + j*18, 16 + i*18));
+                var moduleSlot = new ModuleSlot(moduleInput,j + i * 5,71 + j*18, 16 + i*18);
+                moduleSlots.add(moduleSlot);
+                this.addSlot(moduleSlot);
             }
         }
 
@@ -87,6 +89,12 @@ public class ModificationTableScreenHandler extends ScreenHandler {
     }
 
     public void onModularItemChanged(Inventory inventory) {
-
+        var stack = inventory.getStack(0);
+        var item = stack.getItem();
+        if(item instanceof ModularItem<?> modularItem) {
+            moduleSlots.forEach(m -> {
+                m.updateFilter(modularItem.getAllowedModules());
+            });
+        }
     }
 }

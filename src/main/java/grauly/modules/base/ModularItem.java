@@ -14,7 +14,6 @@ public interface ModularItem<M extends Module> {
     ArrayList<M> getAllowedModules();
     void addAllowedModule(M module);
 
-
     default ArrayList<M> getInstalledModules(ItemStack stack) {
         ArrayList<M> modules = new ArrayList<>();
         ArrayList<ItemStack> stackModuleList = deserializeModules(stack);
