@@ -1,7 +1,6 @@
 package grauly.screen.modification;
 
 import grauly.modules.base.ModularItem;
-import grauly.modules.base.Module;
 import grauly.screen.AllScreenHandlers;
 import grauly.screen.slots.ModularItemSlot;
 import grauly.screen.slots.ModuleSlot;
@@ -16,19 +15,20 @@ import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class ModificationTableScreenHandler extends ScreenHandler {
 
     protected CraftingResultInventory output = new CraftingResultInventory();
-    protected Inventory moduleInput = new SimpleInventory(15) {
+    protected Inventory moduleInputInventory = new SimpleInventory(15) {
         @Override
         public void markDirty() {
             super.markDirty();
             ModificationTableScreenHandler.this.onModulesChanged(this);
         }
     };
-    protected Inventory modularItemInput = new SimpleInventory(1) {
+    protected Inventory modularItemInputInventory = new SimpleInventory(1) {
         @Override
         public void markDirty() {
             super.markDirty();
@@ -36,7 +36,7 @@ public class ModificationTableScreenHandler extends ScreenHandler {
         }
     };
     private final ScreenHandlerType<?> type;
-    private final ArrayList<ModuleSlot> moduleSlots = new ArrayList<>();
+    private final ArrayList<ModuleSlot> moduleInputSlots = new ArrayList<>();
 
     public ModificationTableScreenHandler(int syncId, PlayerInventory inventory) {
         this(AllScreenHandlers.MODIFICATION_TABLE_SCREEN_HANDLER, syncId, inventory);
@@ -46,11 +46,11 @@ public class ModificationTableScreenHandler extends ScreenHandler {
         super(type, syncId);
         this.type = type;
         //construct Slots
-        this.addSlot(new ModularItemSlot(modularItemInput,0,26,34));
+        this.addSlot(new ModularItemSlot(modularItemInputInventory,0,26,34));
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 5; j++) {
-                var moduleSlot = new ModuleSlot(moduleInput,j + i * 5,71 + j*18, 16 + i*18);
-                moduleSlots.add(moduleSlot);
+                var moduleSlot = new ModuleSlot(moduleInputInventory,j + i * 5,71 + j*18, 16 + i*18);
+                moduleInputSlots.add(moduleSlot);
                 this.addSlot(moduleSlot);
             }
         }
@@ -85,16 +85,44 @@ public class ModificationTableScreenHandler extends ScreenHandler {
     }
 
     public void onModulesChanged(Inventory inventory) {
-
+        var modularItemInputStack = modularItemInputInventory.getStack(0);
+        if(!modularItemInputStack.equals(ItemStack.EMPTY)) {
+            var item = modularItemInputStack.getItem();
+            if(item instanceof ModularItem<?> modularItem) {
+                ArrayList<ItemStack> modules = new ArrayList<>();
+                for (int i = 0; i < 15; i++) {
+                    var moduleStack = inventory.getStack(i);
+                    if(!moduleStack.equals(ItemStack.EMPTY)) {
+                        modules.add(moduleStack);
+                    }
+                }
+                modularItem.serializeModules(modules,modularItemInputStack);
+            }
+        }
     }
 
     public void onModularItemChanged(Inventory inventory) {
         var stack = inventory.getStack(0);
-        var item = stack.getItem();
-        if(item instanceof ModularItem<?> modularItem) {
-            moduleSlots.forEach(m -> {
-                m.updateFilter(modularItem.getAllowedModules());
+        if(stack.equals(ItemStack.EMPTY)) {
+            moduleInputInventory.clear();
+            moduleInputSlots.forEach(m -> {
+                m.updateFilter(new ArrayList<>());
             });
+        } else {
+            var item = stack.getItem();
+            if(item instanceof ModularItem<?> modularItem) {
+                moduleInputSlots.forEach(m -> {
+                    m.updateFilter(modularItem.getAllowedModules());
+                });
+                ArrayList<ItemStack> deserializedModules = modularItem.deserializeModules(stack);
+                int length = deserializedModules.size();
+                if(length > 15) {
+                    length = 15;
+                }
+                for (int i = 0; i < length; i++) {
+                    moduleInputInventory.setStack(i,deserializedModules.get(i));
+                }
+            }
         }
     }
 }
