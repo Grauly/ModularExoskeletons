@@ -2,6 +2,7 @@ package grauly;
 
 import grauly.block.AllBlocks;
 import grauly.item.AllItems;
+import grauly.modules.ModuleRegisterHelper;
 import grauly.screen.AllScreenHandlers;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
@@ -24,6 +25,6 @@ public class ModularExos implements ModInitializer {
 		new AllBlocks().register();
 		new AllItems().register();
 		new AllScreenHandlers().register();
-		AllItems.EXO_ITEM.addAllowedModule(AllItems.EX_MODULE);
+		new ModuleRegisterHelper().register();
 	}
 }

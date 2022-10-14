@@ -1,6 +1,7 @@
 package grauly.screen.modification;
 
 import grauly.modules.base.ModularItem;
+import grauly.modules.base.Module;
 import grauly.screen.AllScreenHandlers;
 import grauly.screen.slots.ModularItemSlot;
 import grauly.screen.slots.ModuleSlot;
@@ -46,6 +47,13 @@ public class ModificationTableScreenHandler extends ScreenHandler {
         super(type, syncId);
         this.type = type;
         //construct Slots
+        /*
+        resulting layout:
+        0:          Modular Item
+        1 - 15:     Module Slot
+        16 - 42:    Inventory Slots
+        43 - 51:    Hotbar Slots
+         */
         this.addSlot(new ModularItemSlot(modularItemInputInventory,0,26,34));
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 5; j++) {
@@ -70,7 +78,38 @@ public class ModificationTableScreenHandler extends ScreenHandler {
 
     @Override
     public ItemStack transferSlot(PlayerEntity player, int index) {
-        var stack = player.getInventory().getStack(index);
+        Slot slot = this.slots.get(index);
+        if(slot.hasStack()) {
+            var stackInSlot = slot.getStack();
+            var backupStack = stackInSlot.copy();
+            if(index >= 0 && index <= 15) {
+                //from table to inventory
+                if(!this.insertItem(stackInSlot,16,52,false)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if(index >= 16 && index <= 51) {
+                //from inventory to table
+                if(stackInSlot.getItem() instanceof ModularItem<?>) {
+                    if(!this.insertItem(stackInSlot,0,1,false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (stackInSlot.getItem() instanceof Module) {
+                    if(!this.insertItem(stackInSlot,1,15,false)) {
+                        return ItemStack.EMPTY;
+                    }
+                }
+            }
+            if(stackInSlot.isEmpty()) {
+                slot.setStack(ItemStack.EMPTY);
+            } else {
+                slot.markDirty();
+            }
+            if(stackInSlot.getCount() == backupStack.getCount()) {
+                return ItemStack.EMPTY;
+            }
+            slot.onTakeItem(player,stackInSlot);
+            return stackInSlot;
+        }
         return ItemStack.EMPTY;
     }
 
@@ -122,6 +161,7 @@ public class ModificationTableScreenHandler extends ScreenHandler {
                 for (int i = 0; i < length; i++) {
                     moduleInputInventory.setStack(i,deserializedModules.get(i));
                 }
+                modularItem.recalculateStats(stack);
             }
         }
     }

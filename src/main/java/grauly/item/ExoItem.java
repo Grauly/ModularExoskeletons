@@ -44,4 +44,9 @@ public class ExoItem extends TrinketItem implements ModularItem<ExoModule> {
     public void addAllowedModule(ExoModule module) {
         allowedModuleList.add(module);
     }
+
+    @Override
+    public void recalculateStats(ItemStack stack) {
+
+    }
 }

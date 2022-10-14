@@ -13,6 +13,7 @@ public interface ModularItem<M extends Module> {
 
     ArrayList<M> getAllowedModules();
     void addAllowedModule(M module);
+    void recalculateStats(ItemStack stack);
 
     default ArrayList<M> getInstalledModules(ItemStack stack) {
         ArrayList<M> modules = new ArrayList<>();
