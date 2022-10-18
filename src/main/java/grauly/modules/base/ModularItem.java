@@ -12,8 +12,21 @@ import java.util.ArrayList;
 public interface ModularItem<M extends Module> {
 
     ArrayList<M> getAllowedModules();
+
     void addAllowedModule(M module);
+
     void recalculateStats(ItemStack stack);
+
+    default int getRemainingCapacity(ItemStack stack) {
+        ArrayList<M> modules = this.getInstalledModules(stack);
+        int usedCapacity = 0;
+        for (M module : modules) {
+            usedCapacity += module.getSlotCost();
+        }
+        return getMaxCapacity() - usedCapacity;
+    }
+
+    int getMaxCapacity();
 
     default ArrayList<M> getInstalledModules(ItemStack stack) {
         ArrayList<M> modules = new ArrayList<>();

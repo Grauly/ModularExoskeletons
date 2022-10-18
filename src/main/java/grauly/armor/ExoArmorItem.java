@@ -36,6 +36,11 @@ public class ExoArmorItem extends ArmorItem implements ModularItem<ExoModule> {
     }
 
     @Override
+    public int getMaxCapacity() {
+        return 5;
+    }
+
+    @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
     }

@@ -1,9 +1,12 @@
 package grauly.modules.base;
 
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.ItemStack;
+
 public interface Module {
     int getSlotCost();
-    int getUpkeepCost();
+    int getEnergyUpkeepCost();
     int getUseCost();
     String getDescription();
-    void tick();
+    void tick(ItemStack stack, LivingEntity entity);
 }

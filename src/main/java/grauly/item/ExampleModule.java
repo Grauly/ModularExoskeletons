@@ -1,7 +1,9 @@
 package grauly.item;
 
 import grauly.modules.exo.ExoModule;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
 public class ExampleModule extends Item implements ExoModule {
 
@@ -21,12 +23,12 @@ public class ExampleModule extends Item implements ExoModule {
 
     @Override
     public int getSlotCost() {
-        return 0;
+        return 1;
     }
 
     @Override
-    public int getUpkeepCost() {
-        return 0;
+    public int getEnergyUpkeepCost() {
+        return 5;
     }
 
     @Override
@@ -40,7 +42,9 @@ public class ExampleModule extends Item implements ExoModule {
     }
 
     @Override
-    public void tick() {
+    public void tick(ItemStack stack, LivingEntity entity) {
 
     }
+
+
 }

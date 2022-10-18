@@ -40,7 +40,9 @@ dependencies {
 
 	// modImplementation "net.fabricmc.fabric-api:fabric-api-deprecated:${project.fabric_version}"
 
-	modImplementation "dev.emi:trinkets:${project.trinkets_version}"
+	modImplementation ("dev.emi:trinkets:${project.trinkets_version}") {
+		exclude group: "com.terraformersmc", module: "modmenu"
+	}
 }
 
 processResources {

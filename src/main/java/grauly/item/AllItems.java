@@ -5,11 +5,11 @@ import grauly.armor.ExoArmorItem;
 import grauly.armor.ExoArmorMaterial;
 import grauly.block.AllBlocks;
 import grauly.util.RegistryHelper;
+import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 

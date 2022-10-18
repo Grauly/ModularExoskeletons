@@ -32,6 +32,8 @@ public class ModificationTableScreen extends HandledScreen<ModificationTableScre
         renderBackground(matrices);
         super.render(matrices, mouseX, mouseY, delta);
         drawMouseoverTooltip(matrices, mouseX, mouseY);
+        String capacity = this.handler.getCurrentCapacity() + " / " + this.handler.getMaxCapacity();
+        textRenderer.draw(matrices,capacity, 100,100,65280);
     }
 
     @Override

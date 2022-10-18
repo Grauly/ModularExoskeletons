@@ -51,6 +51,11 @@ public class ExoItem extends TrinketItem implements ModularItem<ExoModule> {
     }
 
     @Override
+    public int getMaxCapacity() {
+        return 7;
+    }
+
+    @Override
     public void onUnequip(ItemStack stack, SlotReference slot, LivingEntity entity) {
         super.onUnequip(stack, slot, entity);
         var attributeInstance = entity.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
