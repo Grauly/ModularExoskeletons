@@ -35,12 +35,16 @@ public class ModificationTableScreen extends HandledScreen<ModificationTableScre
         drawMouseoverTooltip(matrices, mouseX, mouseY);
         String capacity = this.handler.getCurrentCapacity() + " / " + this.handler.getMaxCapacity();
         String energy = this.handler.getCurrentEnergy() + " / " + this.handler.getMaxEnergy();
+
         matrices.push();
-        RenderSystem.applyModelViewMatrix();
-        int x = (width - backgroundWidth) / 2 + backgroundWidth / 6;
+        //note: this little trick aligns the coordinates with the texture pixels, making it easy to position stuff
+        int x = (width - backgroundWidth) / 2 ;
         int y = (height - backgroundHeight) / 2;
-        textRenderer.draw(matrices, capacity, x, y + backgroundHeight / 8f, TEXT_COLOR);
-        textRenderer.draw(matrices, energy, x, y + backgroundHeight / 3f, TEXT_COLOR);
+        matrices.translate(x,y,0.0);
+        RenderSystem.applyModelViewMatrix();
+
+        textRenderer.draw(matrices, capacity, 29, 29 - textRenderer.fontHeight, TEXT_COLOR);
+        textRenderer.draw(matrices, energy, 29, 65 - textRenderer.fontHeight, TEXT_COLOR);
         matrices.pop();
     }
 
