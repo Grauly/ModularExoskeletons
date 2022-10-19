@@ -11,7 +11,8 @@ import net.minecraft.util.Identifier;
 
 public class ModificationTableScreen extends HandledScreen<ModificationTableScreenHandler> {
 
-    private static final Identifier TEXTURE = new Identifier(ModularExos.MODID,"textures/gui/container/modification_table.png");
+    private static final Identifier TEXTURE = new Identifier(ModularExos.MODID, "textures/gui/container/modification_table.png");
+    private static final int TEXT_COLOR = 0x404040;
 
     public ModificationTableScreen(ModificationTableScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
@@ -33,7 +34,14 @@ public class ModificationTableScreen extends HandledScreen<ModificationTableScre
         super.render(matrices, mouseX, mouseY, delta);
         drawMouseoverTooltip(matrices, mouseX, mouseY);
         String capacity = this.handler.getCurrentCapacity() + " / " + this.handler.getMaxCapacity();
-        textRenderer.draw(matrices,capacity, 100,100,65280);
+        String energy = this.handler.getCurrentEnergy() + " / " + this.handler.getMaxEnergy();
+        matrices.push();
+        RenderSystem.applyModelViewMatrix();
+        int x = (width - backgroundWidth) / 2 + backgroundWidth / 6;
+        int y = (height - backgroundHeight) / 2;
+        textRenderer.draw(matrices, capacity, x, y + backgroundHeight / 8f, TEXT_COLOR);
+        textRenderer.draw(matrices, energy, x, y + backgroundHeight / 3f, TEXT_COLOR);
+        matrices.pop();
     }
 
     @Override
