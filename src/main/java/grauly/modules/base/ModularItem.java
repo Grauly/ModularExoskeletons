@@ -8,6 +8,7 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public interface ModularItem<M extends Module> {
 
@@ -44,6 +45,10 @@ public interface ModularItem<M extends Module> {
     }
 
     default void serializeModules(ArrayList<ItemStack> modules, ItemStack stack) {
+        serializeModules(modules,stack,UUID.randomUUID());
+    }
+
+    default void serializeModules(ArrayList<ItemStack> modules, ItemStack stack, UUID assemblyUUID) {
         NbtList moduleList = new NbtList();
 
         for (ItemStack module : modules) {
@@ -51,7 +56,19 @@ public interface ModularItem<M extends Module> {
             module.writeNbt(compound);
             moduleList.add(compound);
         }
+        NbtCompound UUIDCompound = new NbtCompound();
+        UUIDCompound.putUuid(Constants.ASSEMBLY_KEY,assemblyUUID);
         stack.getOrCreateNbt().put(Constants.MODULES_LIST_KEY, moduleList);
+        stack.getOrCreateNbt().put(Constants.MODULE_INSTALLATION, UUIDCompound);
+    }
+
+    default UUID getAssemblyUUID(ItemStack stack) {
+        if(stack.hasNbt()) {
+            var nbt = stack.getNbt();
+            var installDetails = nbt.getCompound(Constants.MODULE_INSTALLATION);
+            return installDetails.getUuid(Constants.ASSEMBLY_KEY);
+        }
+        return null;
     }
 
     default ArrayList<ItemStack> deserializeModules(ItemStack stack) {
