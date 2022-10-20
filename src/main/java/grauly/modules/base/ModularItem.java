@@ -18,16 +18,39 @@ public interface ModularItem<M extends Module> {
 
     void recalculateStats(ItemStack stack);
 
+    int getMaxCapacity();
+
+    int getBaseEnergyGeneration();
+    default int getGeneratedEnergy(ItemStack stack) {
+        ArrayList<M> modules = getInstalledModules(stack);
+        int generatedEnergy = getBaseEnergyGeneration();
+        for(M module : modules) {
+            generatedEnergy += module.getEnergyGeneration();
+        }
+        return generatedEnergy;
+    }
+
+    default int getUsedEnergy(ItemStack stack) {
+        ArrayList<M> modules = getInstalledModules(stack);
+        int usedEnergy = 0;
+        for(M module : modules) {
+            usedEnergy += module.getEnergyUpkeepCost();
+        }
+        return usedEnergy;
+    }
+
     default int getRemainingCapacity(ItemStack stack) {
+        return getMaxCapacity() - getUsedCapacity(stack);
+    }
+
+    default int getUsedCapacity(ItemStack stack) {
         ArrayList<M> modules = this.getInstalledModules(stack);
         int usedCapacity = 0;
         for (M module : modules) {
             usedCapacity += module.getSlotCost();
         }
-        return getMaxCapacity() - usedCapacity;
+        return usedCapacity;
     }
-
-    int getMaxCapacity();
 
     default ArrayList<M> getInstalledModules(ItemStack stack) {
         ArrayList<M> modules = new ArrayList<>();
