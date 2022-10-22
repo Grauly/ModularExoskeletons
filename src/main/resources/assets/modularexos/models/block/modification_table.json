@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "modularexos:block/oak_planks",
+    "east": "modularexos:block/modification_table_side",
+    "north": "modularexos:block/modification_table_front",
+    "particle": "modularexos:block/modification_table_front",
+    "south": "modularexos:block/modification_table_side",
+    "up": "modularexos:block/modification_table_top",
+    "west": "modularexos:block/modification_table_front"
+  }
+}
