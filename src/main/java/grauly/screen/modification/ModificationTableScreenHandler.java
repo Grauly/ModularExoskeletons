@@ -156,18 +156,10 @@ public class ModificationTableScreenHandler extends ScreenHandler {
 
     protected void updateStats(ItemStack stack) {
         if(stack.getItem() instanceof ModularItem<?> modularItem) {
-            var modules = modularItem.getInstalledModules(stack);
-            int slotsUsed = 0;
-            int energyUsed = 0;
-            for (Module module :
-                    modules) {
-                slotsUsed += module.getSlotCost();
-                energyUsed += module.getEnergyUpkeepCost();
-            }
-            setCurrentCapacity(slotsUsed);
-            setCurrentEnergy(energyUsed);
+            setCurrentCapacity(modularItem.getUsedCapacity(stack));
+            setCurrentEnergy(modularItem.getUsedEnergy(stack));
             setMaxCapacity(modularItem.getMaxCapacity());
-            setMaxEnergy(16);
+            setMaxEnergy(modularItem.getGeneratedEnergy(stack));
         }
     }
 

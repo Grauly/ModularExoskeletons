@@ -32,6 +32,11 @@ public class ExampleModule extends Item implements ExoModule {
     }
 
     @Override
+    public int getEnergyGeneration() {
+        return 0;
+    }
+
+    @Override
     public int getUseCost() {
         return 0;
     }

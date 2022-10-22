@@ -23,7 +23,6 @@ public class ExoItem extends TrinketItem implements ModularItem<ExoModule> {
 
     protected static final UUID SPRINT_SPEED_MODIFIER_UUID = UUID.fromString("b0373195-b96a-4271-852e-d5f05d46f345");
     protected static final EntityAttributeModifier SPRINT_SPEED_MODIFIER = new EntityAttributeModifier(SPRINT_SPEED_MODIFIER_UUID, "modularexos:sprintspeedbonus", 0.03f, EntityAttributeModifier.Operation.ADDITION);
-    protected static UUID TEST_UUID;
     protected final ArrayList<ExoModule> allowedModuleList = new ArrayList<>();
 
     public ExoItem(Settings settings) {
@@ -57,7 +56,7 @@ public class ExoItem extends TrinketItem implements ModularItem<ExoModule> {
 
     @Override
     public int getBaseEnergyGeneration() {
-        return 0;
+        return 3;
     }
 
     @Override
@@ -91,7 +90,6 @@ public class ExoItem extends TrinketItem implements ModularItem<ExoModule> {
     public Multimap<EntityAttribute, EntityAttributeModifier> getModifiers(ItemStack stack, SlotReference slot, LivingEntity entity, UUID uuid) {
         var modifiers = super.getModifiers(stack, slot, entity, uuid);
         SlotAttributes.addSlotModifier(modifiers, "chest/back", uuid, 1, EntityAttributeModifier.Operation.ADDITION);
-        TEST_UUID = uuid;
         return modifiers;
     }
 }
