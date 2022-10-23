@@ -20,37 +20,48 @@ import java.util.ArrayList;
 
 public class ModificationTableScreenHandler extends ScreenHandler {
 
-    private final ScreenHandlerType<?> type;
-    private final ArrayList<ModuleSlot> moduleInputSlots = new ArrayList<>();    protected Inventory moduleInputInventory = new SimpleInventory(15) {
+    protected final ScreenHandlerType<?> type;
+    protected final ArrayList<ModuleSlot> moduleInputSlots = new ArrayList<>();
+    protected PropertyDelegate statsPropertyDelegate = new ModificationTablePropertyDelegate();
+
+    public ModificationTableScreenHandler(int syncId, PlayerInventory inventory) {
+        this(AllScreenHandlers.MODIFICATION_TABLE_SCREEN_HANDLER, syncId, inventory);
+    }
+
+    protected ModificationTableScreenHandler(@Nullable ScreenHandlerType<?> type, int syncId, PlayerInventory playerInventory) {
+        super(type, syncId);
+        this.type = type;
+        this.addProperties(statsPropertyDelegate);
+        statsPropertyDelegate.set(0, 1);
+
+        buildSlots(playerInventory);
+    }
+
+    protected Inventory moduleInputInventory = new SimpleInventory(15) {
         @Override
         public void markDirty() {
             super.markDirty();
             ModificationTableScreenHandler.this.onModulesChanged(this);
         }
     };
-    protected PropertyDelegate statsPropertyDelegate = new ModificationTablePropertyDelegate();    protected Inventory modularItemInputInventory = new SimpleInventory(1) {
+
+    protected Inventory modularItemInputInventory = new SimpleInventory(1) {
         @Override
         public void markDirty() {
             super.markDirty();
             ModificationTableScreenHandler.this.onModularItemChanged(this);
         }
     };
-    public ModificationTableScreenHandler(int syncId, PlayerInventory inventory) {
-        this(AllScreenHandlers.MODIFICATION_TABLE_SCREEN_HANDLER, syncId, inventory);
-    }
-    protected ModificationTableScreenHandler(@Nullable ScreenHandlerType<?> type, int syncId, PlayerInventory playerInventory) {
-        super(type, syncId);
-        this.type = type;
-        this.addProperties(statsPropertyDelegate);
-        statsPropertyDelegate.set(0, 1);
+
+    /**
+     * resulting layout:
+     * 0:          Modular Item
+     * 1 - 15:     Module Slot
+     * 16 - 42:    Inventory Slots
+     * 43 - 51:    Hotbar Slots
+     */
+    protected void buildSlots(PlayerInventory playerInventory) {
         //construct Slots
-        /*
-        resulting layout:
-        0:          Modular Item
-        1 - 15:     Module Slot
-        16 - 42:    Inventory Slots
-        43 - 51:    Hotbar Slots
-         */
         this.addSlot(new ModularItemSlot(modularItemInputInventory, 0, 26, 34));
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 5; j++) {
@@ -69,7 +80,6 @@ public class ModificationTableScreenHandler extends ScreenHandler {
         for (int i = 0; i < 9; ++i) {
             this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 142));
         }
-
     }
 
     public void onModulesChanged(Inventory inventory) {
@@ -155,7 +165,7 @@ public class ModificationTableScreenHandler extends ScreenHandler {
     }
 
     protected void updateStats(ItemStack stack) {
-        if(stack.getItem() instanceof ModularItem<?> modularItem) {
+        if (stack.getItem() instanceof ModularItem<?> modularItem) {
             setCurrentCapacity(modularItem.getUsedCapacity(stack));
             setCurrentEnergy(modularItem.getUsedEnergy(stack));
             setMaxCapacity(modularItem.getMaxCapacity());
@@ -204,5 +214,10 @@ public class ModificationTableScreenHandler extends ScreenHandler {
     protected void setMaxEnergy(int maxEnergy) {
         statsPropertyDelegate.set(3, maxEnergy);
     }
+
+
+
+
+
 
 }
