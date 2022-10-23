@@ -31,11 +31,11 @@ public class ModificationTableScreenHandler extends ScreenHandler {
     protected ModificationTableScreenHandler(@Nullable ScreenHandlerType<?> type, int syncId, PlayerInventory playerInventory) {
         super(type, syncId);
         this.type = type;
-        this.addProperties(statsPropertyDelegate);
-        statsPropertyDelegate.set(0, 1);
 
+        registerProperties();
         buildSlots(playerInventory);
     }
+
 
     protected Inventory moduleInputInventory = new SimpleInventory(15) {
         @Override
@@ -52,6 +52,10 @@ public class ModificationTableScreenHandler extends ScreenHandler {
             ModificationTableScreenHandler.this.onModularItemChanged(this);
         }
     };
+
+    protected void registerProperties() {
+        this.addProperties(statsPropertyDelegate);
+    }
 
     /**
      * resulting layout:

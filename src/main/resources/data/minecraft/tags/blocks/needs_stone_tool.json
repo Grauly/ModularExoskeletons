@@ -1,7 +1,8 @@
 {
   "replace": false,
   "values": [
-    "modularexos:modification_table"
+    "modularexos:modification_table",
+    "modularexos:exo_modfication_table"
   ]
 }
 

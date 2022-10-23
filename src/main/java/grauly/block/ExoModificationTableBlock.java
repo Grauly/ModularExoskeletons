@@ -25,7 +25,7 @@ public class ExoModificationTableBlock extends Block {
     public NamedScreenHandlerFactory createScreenHandlerFactory(BlockState state, World world, BlockPos pos) {
         return new SimpleNamedScreenHandlerFactory(
                 ((syncId, inventory, player) -> new ExoModificationTableScreenHandler(syncId, inventory)),
-                Text.translatable("modificationtable.title"));
+                Text.translatable("exomodificationtable.title"));
     }
 
     @Override

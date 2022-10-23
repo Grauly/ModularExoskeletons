@@ -32,5 +32,6 @@ public class AllItems implements RegistryHelper {
         Registry.register(Registry.ITEM, id("example_module"), EX_MODULE);
 
         Registry.register(Registry.ITEM, id("modification_table"), new BlockItem(AllBlocks.MODIFICATION_TABLE, settings));
+        Registry.register(Registry.ITEM, id("exo_modification_table"), new BlockItem(AllBlocks.EXO_MODIFICATION_TABLE, settings));
     }
 }

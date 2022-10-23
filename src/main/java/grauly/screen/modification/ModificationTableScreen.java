@@ -9,10 +9,11 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
+import static grauly.util.Constants.TEXT_COLOR;
+
 public class ModificationTableScreen extends HandledScreen<ModificationTableScreenHandler> {
 
     private static final Identifier TEXTURE = new Identifier(ModularExos.MODID, "textures/gui/container/modification_table.png");
-    private static final int TEXT_COLOR = 0x404040;
 
     public ModificationTableScreen(ModificationTableScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
