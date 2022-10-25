@@ -1,10 +1,7 @@
 package grauly.screen.exomodification;
 
-import dev.emi.trinkets.api.SlotReference;
 import dev.emi.trinkets.api.TrinketsApi;
-import grauly.item.ExoItem;
 import grauly.screen.AllScreenHandlers;
-import grauly.screen.slots.LockedSlot;
 import grauly.screen.slots.ModuleSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -20,10 +17,9 @@ import java.util.ArrayList;
 
 public class ExoModificationTableScreenHandler extends ScreenHandler {
 
+    protected final ArrayList<ModuleSlot> moduleInputSlots = new ArrayList<>();
     protected ExoModificationTablePropertyDelegate statsPropertyDelegate = new ExoModificationTablePropertyDelegate();
     protected ItemStack currentModifyingStack = ItemStack.EMPTY;
-    protected final ArrayList<ModuleSlot> moduleInputSlots = new ArrayList<>();
-
     protected Inventory moduleInputInventory = new SimpleInventory(15) {
         @Override
         public void markDirty() {
@@ -41,6 +37,7 @@ public class ExoModificationTableScreenHandler extends ScreenHandler {
 
         registerProperties();
         buildSlots(playerInventory);
+        setEditingStack(-1);
     }
 
 
@@ -55,6 +52,7 @@ public class ExoModificationTableScreenHandler extends ScreenHandler {
      * 42 - 50  hotbar
      * 51 - 54  armor
      * 55       exo trinket
+     *
      * @param playerInventory
      */
     protected void buildSlots(PlayerInventory playerInventory) {
@@ -76,24 +74,36 @@ public class ExoModificationTableScreenHandler extends ScreenHandler {
             this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 142));
         }
         for (int i = 0; i < 4; i++) {
-            this.addSlot(new Slot(playerInventory, 39 - i, -27, 8 + i*18));
+            this.addSlot(new Slot(playerInventory, 39 - i, -27, 8 + i * 18));
         }
         //exo slot
         Inventory inventory = new SimpleInventory(1);
         var optionalTrinketComponent = TrinketsApi.getTrinketComponent(playerInventory.player);
-        if(optionalTrinketComponent.isPresent()) {
+        if (optionalTrinketComponent.isPresent()) {
             var trinketComponent = optionalTrinketComponent.get();
             var chest = trinketComponent.getInventory().get("chest");
-            if(chest != null) {
+            if (chest != null) {
                 var exo = chest.get("exo");
                 inventory = exo;
             }
         }
-        this.addSlot(new Slot(inventory,0,-27, 8 + 4*18));
+        this.addSlot(new Slot(inventory, 0, -27, 8 + 4 * 18));
     }
 
     protected void onModulesChanged(Inventory inventory) {
 
+    }
+
+    public void setEditingStack(int slot) {
+        statsPropertyDelegate.setSelectedSlot(slot);
+        if (slot != -1) {
+            var slotIndex = 56 - (5 - slot);
+            if(this.getSlot(slotIndex).hasStack()) {
+                currentModifyingStack =  this.getSlot(slotIndex).getStack();
+                return;
+            }
+        }
+        currentModifyingStack = ItemStack.EMPTY;
     }
 
     @Override
