@@ -85,11 +85,4 @@ public class ExoItem extends TrinketItem implements ModularItem<ExoModule> {
             }
         super.tick(stack, slot, entity);
     }
-
-    @Override
-    public Multimap<EntityAttribute, EntityAttributeModifier> getModifiers(ItemStack stack, SlotReference slot, LivingEntity entity, UUID uuid) {
-        var modifiers = super.getModifiers(stack, slot, entity, uuid);
-        SlotAttributes.addSlotModifier(modifiers, "chest/back", uuid, 1, EntityAttributeModifier.Operation.ADDITION);
-        return modifiers;
-    }
 }
