@@ -17,6 +17,7 @@ public class ExoModificationTableScreen extends HandledScreen<ExoModificationTab
 
     public ExoModificationTableScreen(ExoModificationTableScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
+        backgroundWidth = 211;
     }
 
     @Override
@@ -26,7 +27,7 @@ public class ExoModificationTableScreen extends HandledScreen<ExoModificationTab
         RenderSystem.setShaderTexture(0, TEXTURE);
         int x = (width - backgroundWidth) / 2;
         int y = (height - backgroundHeight) / 2;
-        drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight);
+        drawTexture(matrices, x - 35, y, 0, 0, backgroundWidth, backgroundHeight);
     }
 
     @Override
@@ -34,8 +35,8 @@ public class ExoModificationTableScreen extends HandledScreen<ExoModificationTab
         renderBackground(matrices);
         super.render(matrices, mouseX, mouseY, delta);
         drawMouseoverTooltip(matrices, mouseX, mouseY);
-        String capacity = this.handler.getCurrentCapacity() + " / " + this.handler.getMaxCapacity();
-        String energy = this.handler.getCurrentEnergy() + " / " + this.handler.getMaxEnergy();
+        String capacity = this.handler.statsPropertyDelegate.getCurrentCapacity() + " / " + this.handler.statsPropertyDelegate.getMaxCapacity();
+        String energy = this.handler.statsPropertyDelegate.getCurrentEnergy() + " / " + this.handler.statsPropertyDelegate.getMaxEnergy();
 
         matrices.push();
         //note: this little trick aligns the coordinates with the texture pixels, making it easy to position stuff
