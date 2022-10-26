@@ -19,7 +19,7 @@ public class ModularExos implements ModInitializer {
 	public static final String MODID = "modularexos";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MODID);
 	public static final ItemGroup EXO_GROUP = FabricItemGroupBuilder
-			.create(new Identifier(ModularExos.MODID,"exo_group"))
+			.create(new Identifier(ModularExos.MODID,"main"))
 			.icon(() -> new ItemStack(AllItems.EXO_ITEM))
 			.build();
 

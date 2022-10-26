@@ -1,0 +1,30 @@
+{
+  "item.modularexos.exo_item": "Exo Skeleton",
+  "item.modularexos.exo_helmet": "Modular Exo Helmet",
+  "item.modularexos.exo_chestplate": "Modular Exo Chestplate",
+  "item.modularexos.exo_leggings": "Modular Exo Legging",
+  "item.modularexos.exo_boots": "Modular Exo Boots",
+  "item.modularexos.simple_power_plant_module": "Prismatic Power Core",
+  "item.modularexos.compact_power_plant_module": "Echo Power Tap",
+  "item.modularexos.expensive_power_plant_module": "Crystalline Chorus Reactor",
+  "item.modularexos.basic_armor_module": "Prismarine Armor Plating",
+  "item.modularexos.advanced_armor_module": "Netherite Reinforced PCQ Armor Plating",
+  "item.modularexos.powered_armor_module": "Powered Armor Plating",
+
+  "block.modularexos.modification_table": "Modification Table",
+  "block.modularexos.exo_modification_table": "Exo Modification Table",
+
+  "modificationtable.title": "Modifying",
+  "exomodificationtable.title": "Exo Modification",
+
+  "modularexos.module.capacity_cost": "Size: ",
+  "modularexos.module.energy_cost": "Energy: ",
+  "modularexos.module.energy_generation": "Generates: ",
+  "modularexos.module.armor": "Armor: ",
+  "modularexos.module.toughness": "Toughness: ",
+  "modularexos.module.power.description": "Provides Power to the Exo",
+  "modularexos.module.armor.description": "Provides Armor to the Exo",
+
+  "trinkets.slot.chest.exo": "Exo Skeleton",
+  "itemGroup.modularexos.main": "Modular Exoskeletons"
+}

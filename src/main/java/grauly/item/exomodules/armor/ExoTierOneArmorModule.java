@@ -1,44 +1,29 @@
-package grauly.item;
+package grauly.item.exomodules.armor;
 
-import grauly.modules.exo.ExoModule;
+import grauly.item.exomodules.ExoModuleItem;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.text.Text;
 import net.minecraft.util.Pair;
 
 import java.util.ArrayList;
 
-public class ExampleModule extends Item implements ExoModule {
+public class ExoTierOneArmorModule extends ExoModuleItem {
 
-    public ExampleModule(Settings settings) {
+    public ExoTierOneArmorModule(Settings settings) {
         super(settings);
     }
 
     @Override
-    public int getArmor() {
-        return 1;
-    }
-
-    @Override
-    public int getToughness() {
-        return 1;
-    }
-
-    @Override
-    public ArrayList<Pair<EntityAttribute, EntityAttributeModifier>> getAttributeModifiers() {
-        return null;
-    }
-
-    @Override
     public int getSlotCost() {
-        return 1;
+        return 4;
     }
 
     @Override
     public int getEnergyUpkeepCost() {
-        return 5;
+        return 0;
     }
 
     @Override
@@ -53,7 +38,7 @@ public class ExampleModule extends Item implements ExoModule {
 
     @Override
     public String getDescription() {
-        return "Hello!";
+        return Text.translatable("modularexos.module.armor.description").getString();
     }
 
     @Override
@@ -61,5 +46,18 @@ public class ExampleModule extends Item implements ExoModule {
 
     }
 
+    @Override
+    public int getArmor() {
+        return 1;
+    }
 
+    @Override
+    public int getToughness() {
+        return 0;
+    }
+
+    @Override
+    public ArrayList<Pair<EntityAttribute, EntityAttributeModifier>> getAttributeModifiers() {
+        return super.getAttributeModifiers();
+    }
 }

@@ -9,5 +9,5 @@ public interface Module {
     int getEnergyGeneration();
     int getUseCost();
     String getDescription();
-    void tick(ItemStack stack, LivingEntity entity);
+    void moduleTick(ItemStack stack, LivingEntity entity);
 }

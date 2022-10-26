@@ -23,21 +23,20 @@ public class ExoArmorItem extends ArmorItem implements ModularItem<ExoModule> {
 
     @Override
     public void recalculateStats(ItemStack stack) {
-        int armor = this.getProtection();
-        float toughness = this.getToughness();
+        resetAttributes(stack);
+        stack.addAttributeModifier(EntityAttributes.GENERIC_ARMOR, new EntityAttributeModifier("Modular Armor", this.getProtection(), EntityAttributeModifier.Operation.ADDITION), this.slot);
+        stack.addAttributeModifier(EntityAttributes.GENERIC_ARMOR_TOUGHNESS, new EntityAttributeModifier("Modular Toughness", this.getToughness(), EntityAttributeModifier.Operation.ADDITION), this.slot);
         var installedModules = this.getInstalledModules(stack);
         for (ExoModule module : installedModules) {
-            armor += module.getArmor();
-            toughness += module.getToughness();
+            if(module.getAttributeModifiers() != null) {
+                module.getAttributeModifiers().forEach(p -> stack.addAttributeModifier(p.getLeft(),p.getRight(),slot));
+            }
         }
-        resetAttributes(stack);
-        stack.addAttributeModifier(EntityAttributes.GENERIC_ARMOR, new EntityAttributeModifier("Modular Armor", armor, EntityAttributeModifier.Operation.ADDITION), this.slot);
-        stack.addAttributeModifier(EntityAttributes.GENERIC_ARMOR_TOUGHNESS, new EntityAttributeModifier("Modular Toughness", toughness, EntityAttributeModifier.Operation.ADDITION), this.slot);
     }
 
     @Override
     public int getMaxCapacity() {
-        return 5;
+        return 7;
     }
 
     @Override
