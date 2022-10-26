@@ -42,7 +42,9 @@ public class ExoModificationTableScreen extends HandledScreen<ExoModificationTab
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         renderBackground(matrices);
+        matrices.push();
         super.render(matrices, mouseX, mouseY, delta);
+        matrices.pop();
         drawMouseoverTooltip(matrices, mouseX, mouseY);
         String capacity = this.handler.statsPropertyDelegate.getCurrentCapacity() + " / " + this.handler.statsPropertyDelegate.getMaxCapacity();
         String energy = this.handler.statsPropertyDelegate.getCurrentEnergy() + " / " + this.handler.statsPropertyDelegate.getMaxEnergy();
@@ -66,7 +68,6 @@ public class ExoModificationTableScreen extends HandledScreen<ExoModificationTab
                 drawItem(item,61,34,"");
             }
         }
-
         matrices.pop();
 
     }
@@ -97,9 +98,16 @@ public class ExoModificationTableScreen extends HandledScreen<ExoModificationTab
         // Center the title
         titleX = (backgroundWidth - textRenderer.getWidth(title)) / 2;
         //draw the buttons
+        int x = (width - backgroundWidth) / 2;
+        int y = (height - backgroundHeight) / 2;
+
+
         for (int i = 0; i < 5; i++) {
             int finalI = i;
-            ButtonWidget buttonWidget = new TexturedButtonWidget(205, 97 + i * 18, 8, 8, 211, 0, 8, TEXTURE, (p) -> {
+            /*ButtonWidget buttonWidget = new TexturedButtonWidget(205, 97 + i * 18, 8, 8, 211, 0, 8, TEXTURE, (p) -> {
+                ExoModificationTableScreen.this.onButtonPressed(finalI);
+            });*/
+            ButtonWidget buttonWidget = new TexturedButtonWidget(x - 9, y + 12 + i * 18, 8, 8, 211, 0, 8, TEXTURE, (p) -> {
                 ExoModificationTableScreen.this.onButtonPressed(finalI);
             });
             this.addDrawableChild(buttonWidget);
