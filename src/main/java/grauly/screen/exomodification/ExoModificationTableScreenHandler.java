@@ -1,6 +1,7 @@
 package grauly.screen.exomodification;
 
 import dev.emi.trinkets.api.TrinketsApi;
+import grauly.modules.base.ModularItem;
 import grauly.screen.AllScreenHandlers;
 import grauly.screen.slots.ModuleSlot;
 import net.minecraft.entity.player.PlayerEntity;
@@ -24,7 +25,7 @@ public class ExoModificationTableScreenHandler extends ScreenHandler {
         @Override
         public void markDirty() {
             super.markDirty();
-            ExoModificationTableScreenHandler.this.onModulesChanged(this);
+            ExoModificationTableScreenHandler.this.onModulesChanged();
         }
     };
 
@@ -90,16 +91,63 @@ public class ExoModificationTableScreenHandler extends ScreenHandler {
         this.addSlot(new Slot(inventory, 0, -27, 8 + 4 * 18));
     }
 
-    protected void onModulesChanged(Inventory inventory) {
-
+    protected void updateStats() {
+        int totalPowerGen = 0;
+        int totalPowerUse = 0;
+        for (int i = 0; i < 5; i++) {
+            var slotIndex = 56 - (5 - i);
+            var stack = this.getSlot(slotIndex).getStack();
+            if(stack.getItem() instanceof ModularItem<?> modularItem) {
+                totalPowerGen += modularItem.getTotalGeneratedEnergy(stack);
+                totalPowerUse += modularItem.getUsedEnergy(stack);
+            }
+        }
+        statsPropertyDelegate.setMaxEnergy(totalPowerGen);
+        statsPropertyDelegate.setCurrentEnergy(totalPowerUse);
+        if(currentModifyingStack.getItem() instanceof ModularItem<?> modularItem) {
+            statsPropertyDelegate.setCurrentCapacity(modularItem.getUsedCapacity(currentModifyingStack));
+            statsPropertyDelegate.setMaxCapacity(modularItem.getMaxCapacity());
+        } else {
+            statsPropertyDelegate.setMaxCapacity(0);
+            statsPropertyDelegate.setCurrentCapacity(0);
+        }
     }
 
+    protected void onModulesChanged() {
+        if(currentModifyingStack.equals(ItemStack.EMPTY)) {
+            return;
+        }
+        if(currentModifyingStack.getItem() instanceof ModularItem<?> modularItem) {
+            ArrayList<ItemStack> modules = new ArrayList<>();
+            for (int i = 0; i < 15; i++) {
+                modules.add(moduleInputInventory.getStack(i));
+            }
+            modularItem.serializeModules(modules,currentModifyingStack);
+            updateStats();
+        }
+    }
+
+    protected void prepareEditing() {
+        moduleInputInventory.clear();
+        moduleInputSlots.forEach(s -> s.updateFilter(new ArrayList<>()));
+        if(currentModifyingStack.equals(ItemStack.EMPTY)) {
+            return;
+        }
+        if(currentModifyingStack.getItem() instanceof ModularItem<?> modularItem) {
+            var modules = modularItem.deserializeModules(currentModifyingStack);
+            for (int i = 0; i < Math.min(15,modules.size()); i++) {
+                moduleInputInventory.setStack(i,modules.get(i));
+                moduleInputSlots.forEach(s -> s.updateFilter(modularItem.getAllowedModules()));
+            }
+        }
+    }
     public void setEditingStack(int slot) {
         statsPropertyDelegate.setSelectedSlot(slot);
         if (slot != -1) {
             var slotIndex = 56 - (5 - slot);
             if(this.getSlot(slotIndex).hasStack()) {
                 currentModifyingStack =  this.getSlot(slotIndex).getStack();
+                prepareEditing();
                 return;
             }
         }

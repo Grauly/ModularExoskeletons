@@ -21,7 +21,7 @@ public interface ModularItem<M extends Module> {
     int getMaxCapacity();
 
     int getBaseEnergyGeneration();
-    default int getGeneratedEnergy(ItemStack stack) {
+    default int getTotalGeneratedEnergy(ItemStack stack) {
         ArrayList<M> modules = getInstalledModules(stack);
         int generatedEnergy = getBaseEnergyGeneration();
         for(M module : modules) {

@@ -173,7 +173,7 @@ public class ModificationTableScreenHandler extends ScreenHandler {
             setCurrentCapacity(modularItem.getUsedCapacity(stack));
             setCurrentEnergy(modularItem.getUsedEnergy(stack));
             setMaxCapacity(modularItem.getMaxCapacity());
-            setMaxEnergy(modularItem.getGeneratedEnergy(stack));
+            setMaxEnergy(modularItem.getTotalGeneratedEnergy(stack));
         }
     }
 
