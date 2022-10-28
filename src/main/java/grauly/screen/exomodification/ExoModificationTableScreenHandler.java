@@ -2,12 +2,15 @@ package grauly.screen.exomodification;
 
 import dev.emi.trinkets.api.TrinketsApi;
 import grauly.modules.base.ModularItem;
+import grauly.modules.base.Module;
 import grauly.screen.AllScreenHandlers;
+import grauly.screen.slots.LockedSlot;
 import grauly.screen.slots.ModuleSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
@@ -15,19 +18,22 @@ import net.minecraft.screen.slot.Slot;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ExoModificationTableScreenHandler extends ScreenHandler {
 
     protected final ArrayList<ModuleSlot> moduleInputSlots = new ArrayList<>();
     protected ExoModificationTablePropertyDelegate statsPropertyDelegate = new ExoModificationTablePropertyDelegate();
     protected ItemStack currentModifyingStack = ItemStack.EMPTY;
-    protected Inventory moduleInputInventory = new SimpleInventory(15) {
+    protected SimpleInventory moduleInputInventory = new SimpleInventory(15) {
         @Override
         public void markDirty() {
             super.markDirty();
-            ExoModificationTableScreenHandler.this.onModulesChanged();
+            ExoModificationTableScreenHandler.this.onModulesChanged(this);
         }
     };
+
+    protected int lastSelectedSlot = 0;
 
     public ExoModificationTableScreenHandler(int syncId, PlayerInventory inventory) {
         this(AllScreenHandlers.EXO_MODIFICATION_TABLE_SCREEN_HANDLER, syncId, inventory);
@@ -75,7 +81,7 @@ public class ExoModificationTableScreenHandler extends ScreenHandler {
             this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 142));
         }
         for (int i = 0; i < 4; i++) {
-            this.addSlot(new Slot(playerInventory, 39 - i, -27, 8 + i * 18));
+            this.addSlot(new LockedSlot(playerInventory, 39 - i, -27, 8 + i * 18));
         }
         //exo slot
         Inventory inventory = new SimpleInventory(1);
@@ -88,7 +94,7 @@ public class ExoModificationTableScreenHandler extends ScreenHandler {
                 inventory = exo;
             }
         }
-        this.addSlot(new Slot(inventory, 0, -27, 8 + 4 * 18));
+        this.addSlot(new LockedSlot(inventory, 0, -27, 8 + 4 * 18));
     }
 
     protected void updateStats() {
@@ -113,7 +119,7 @@ public class ExoModificationTableScreenHandler extends ScreenHandler {
         }
     }
 
-    protected void onModulesChanged() {
+    protected void onModulesChanged(Inventory inventory) {
         if(currentModifyingStack.equals(ItemStack.EMPTY)) {
             return;
         }
@@ -123,24 +129,33 @@ public class ExoModificationTableScreenHandler extends ScreenHandler {
                 modules.add(moduleInputInventory.getStack(i));
             }
             modularItem.serializeModules(modules,currentModifyingStack);
+            modularItem.recalculateStats(currentModifyingStack);
             updateStats();
         }
     }
 
+    @Override
+    public boolean onButtonClick(PlayerEntity player, int id) {
+        setEditingStack(id);
+        return true;
+    }
+
     protected void prepareEditing() {
-        moduleInputInventory.clear();
+        moduleInputInventory.stacks.clear();
         moduleInputSlots.forEach(s -> s.updateFilter(new ArrayList<>()));
         if(currentModifyingStack.equals(ItemStack.EMPTY)) {
             return;
         }
         if(currentModifyingStack.getItem() instanceof ModularItem<?> modularItem) {
-            var modules = modularItem.deserializeModules(currentModifyingStack);
-            for (int i = 0; i < Math.min(15,modules.size()); i++) {
-                moduleInputInventory.setStack(i,modules.get(i));
-                moduleInputSlots.forEach(s -> s.updateFilter(modularItem.getAllowedModules()));
+            moduleInputSlots.forEach(s -> s.updateFilter(modularItem.getAllowedModules()));
+            ArrayList<ItemStack> deserializedModules = modularItem.deserializeModules(currentModifyingStack);
+            for (int i = 0; i < Math.min(15, deserializedModules.size()); i++) {
+                moduleInputInventory.setStack(i,deserializedModules.get(i));
             }
         }
+        updateStats();
     }
+
     public void setEditingStack(int slot) {
         statsPropertyDelegate.setSelectedSlot(slot);
         if (slot != -1) {
@@ -156,6 +171,35 @@ public class ExoModificationTableScreenHandler extends ScreenHandler {
 
     @Override
     public ItemStack transferSlot(PlayerEntity player, int index) {
+        Slot slot = this.getSlot(index);
+        if(slot.hasStack()) {
+            var stackInSlot = this.getSlot(index).getStack();
+            var backupStack = stackInSlot.copy();
+            //from inventory to table
+            if(index >= 15 && index <= 50) {
+                if(stackInSlot.getItem() instanceof Module) {
+                    if(!this.insertItem(stackInSlot,0,14,false)) {
+                        return ItemStack.EMPTY;
+                    }
+                }
+            }
+            //from table to inventory
+            if(index <= 14) {
+                if(!this.insertItem(stackInSlot,15,50,false)) {
+                    return ItemStack.EMPTY;
+                }
+            }
+            if (stackInSlot.isEmpty()) {
+                slot.setStack(ItemStack.EMPTY);
+            } else {
+                slot.markDirty();
+            }
+            if (stackInSlot.getCount() == backupStack.getCount()) {
+                return ItemStack.EMPTY;
+            }
+            slot.onTakeItem(player, stackInSlot);
+            return stackInSlot;
+        }
         return ItemStack.EMPTY;
     }
 

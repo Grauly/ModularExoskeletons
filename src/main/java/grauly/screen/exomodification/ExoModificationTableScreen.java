@@ -15,6 +15,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.packet.c2s.play.ButtonClickC2SPacket;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
@@ -86,10 +87,13 @@ public class ExoModificationTableScreen extends HandledScreen<ExoModificationTab
         this.itemRenderer.zOffset = 0.0f;
     }
 
+
+
     protected void onButtonPressed(int slot) {
-        PacketByteBuf buffer = PacketByteBufs.create();
+/*        PacketByteBuf buffer = PacketByteBufs.create();
         buffer.writeInt(slot);
-        ClientPlayNetworking.send(Constants.SLOT_SELECT_CHANNEL, buffer);
+        ClientPlayNetworking.send(Constants.SLOT_SELECT_CHANNEL, buffer);*/
+        this.client.interactionManager.clickButton(this.handler.syncId,slot);
     }
 
     @Override

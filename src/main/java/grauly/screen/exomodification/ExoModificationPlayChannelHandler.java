@@ -11,8 +11,8 @@ public class ExoModificationPlayChannelHandler implements ServerPlayNetworking.P
 
     @Override
     public void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
-        if(player.currentScreenHandler instanceof ExoModificationTableScreenHandler screenHandler) {
+        /*if(player.currentScreenHandler instanceof ExoModificationTableScreenHandler screenHandler) {
             screenHandler.setEditingStack(buf.readInt());
-        }
+        }*/
     }
 }

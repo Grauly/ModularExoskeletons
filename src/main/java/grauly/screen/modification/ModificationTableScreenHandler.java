@@ -118,11 +118,7 @@ public class ModificationTableScreenHandler extends ScreenHandler {
                     m.updateFilter(modularItem.getAllowedModules());
                 });
                 ArrayList<ItemStack> deserializedModules = modularItem.deserializeModules(stack);
-                int length = deserializedModules.size();
-                if (length > 15) {
-                    length = 15;
-                }
-                for (int i = 0; i < length; i++) {
+                for (int i = 0; i < Math.min(15,deserializedModules.size()); i++) {
                     moduleInputInventory.setStack(i, deserializedModules.get(i));
                 }
                 modularItem.recalculateStats(stack);

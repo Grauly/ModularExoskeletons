@@ -3,6 +3,7 @@ package grauly.modules.base;
 import grauly.ModularExos;
 import grauly.util.Constants;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
@@ -75,9 +76,11 @@ public interface ModularItem<M extends Module> {
         NbtList moduleList = new NbtList();
 
         for (ItemStack module : modules) {
-            NbtCompound compound = new NbtCompound();
-            module.writeNbt(compound);
-            moduleList.add(compound);
+            if(!(module.isEmpty() || module.getItem().equals(Items.AIR) || module.equals(ItemStack.EMPTY))) {
+                NbtCompound compound = new NbtCompound();
+                module.writeNbt(compound);
+                moduleList.add(compound);
+            }
         }
         NbtCompound UUIDCompound = new NbtCompound();
         UUIDCompound.putUuid(Constants.ASSEMBLY_KEY,assemblyUUID);
