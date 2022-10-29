@@ -11,12 +11,10 @@ import grauly.item.exomodules.power.CompactPowerPlantModule;
 import grauly.item.exomodules.power.ExpensivePowerPlantModule;
 import grauly.item.exomodules.power.SimplePowerPlantModule;
 import grauly.util.RegistryHelper;
-import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.util.registry.Registry;
 
 
 public class AllItems implements RegistryHelper {
@@ -36,22 +34,22 @@ public class AllItems implements RegistryHelper {
     public static final ExoTierThreeArmorModule EXO_TIER_THREE_ARMOR_MODULE = new ExoTierThreeArmorModule(settings);
 
     public void register() {
-        Registry.register(Registry.ITEM, id("exo_item"), EXO_ITEM);
-        Registry.register(Registry.ITEM, id("exo_helmet"), EXO_HELMET);
-        Registry.register(Registry.ITEM, id("exo_chestplate"), EXO_CHESTPLATE);
-        Registry.register(Registry.ITEM, id("exo_leggings"), EXO_LEGGING);
-        Registry.register(Registry.ITEM, id("exo_boots"), EXO_BOOTS);
-        Registry.register(Registry.ITEM, id("example_module"), EX_MODULE);
+        item("exo_item", EXO_ITEM);
+        item("exo_helmet", EXO_HELMET);
+        item("exo_chestplate", EXO_CHESTPLATE);
+        item("exo_leggings", EXO_LEGGING);
+        item("exo_boots", EXO_BOOTS);
+        item("example_module", EX_MODULE);
 
-        Registry.register(Registry.ITEM, id("simple_power_plant_module"), SIMPLE_POWER_PLANT_MODULE);
-        Registry.register(Registry.ITEM, id("compact_power_plant_module"), COMPACT_POWER_PLANT_MODULE);
-        Registry.register(Registry.ITEM, id("expensive_power_plant_module"), EXPENSIVE_POWER_PLANT_MODULE);
+        item("simple_power_plant_module", SIMPLE_POWER_PLANT_MODULE);
+        item("compact_power_plant_module", COMPACT_POWER_PLANT_MODULE);
+        item("expensive_power_plant_module", EXPENSIVE_POWER_PLANT_MODULE);
 
-        Registry.register(Registry.ITEM, id("basic_armor_module"), EXO_TIER_ONE_ARMOR_MODULE);
-        Registry.register(Registry.ITEM, id("advanced_armor_module"), EXO_TIER_TWO_ARMOR_MODULE);
-        Registry.register(Registry.ITEM, id("powered_armor_module"), EXO_TIER_THREE_ARMOR_MODULE);
+        item("basic_armor_module", EXO_TIER_ONE_ARMOR_MODULE);
+        item("advanced_armor_module", EXO_TIER_TWO_ARMOR_MODULE);
+        item("powered_armor_module", EXO_TIER_THREE_ARMOR_MODULE);
 
-        Registry.register(Registry.ITEM, id("modification_table"), new BlockItem(AllBlocks.MODIFICATION_TABLE, settings));
-        Registry.register(Registry.ITEM, id("exo_modification_table"), new BlockItem(AllBlocks.EXO_MODIFICATION_TABLE, settings));
+        item("modification_table", new BlockItem(AllBlocks.MODIFICATION_TABLE, settings));
+        item("exo_modification_table", new BlockItem(AllBlocks.EXO_MODIFICATION_TABLE, settings));
     }
 }
