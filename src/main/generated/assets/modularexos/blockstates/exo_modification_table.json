@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "modularexos:block/exo_modification_table"
+    }
+  }
+}

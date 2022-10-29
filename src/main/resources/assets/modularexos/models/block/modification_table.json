@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/cube",
   "textures": {
-    "down": "modularexos:block/oak_planks",
+    "down": "modularexos:block/modification_table_bottom",
     "east": "modularexos:block/modification_table_side",
     "north": "modularexos:block/modification_table_front",
     "particle": "modularexos:block/modification_table_front",

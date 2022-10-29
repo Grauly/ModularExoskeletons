@@ -23,6 +23,9 @@
     ],
     "client": [
       "grauly.ModularExosClient"
+    ],
+    "fabric-datagen": [
+      "grauly.datagen.ModularExosDatagen"
     ]
   },
   "mixins": [
