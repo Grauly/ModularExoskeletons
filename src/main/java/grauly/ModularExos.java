@@ -1,14 +1,13 @@
 package grauly;
 
 import grauly.block.AllBlocks;
+import grauly.event.EquipmentChangeEvent;
 import grauly.item.AllItems;
 import grauly.modules.ModuleRegisterHelper;
 import grauly.screen.AllScreenHandlers;
-import grauly.screen.exomodification.ExoModificationPlayChannelHandler;
-import grauly.util.Constants;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
@@ -30,6 +29,6 @@ public class ModularExos implements ModInitializer {
 		new AllScreenHandlers().register();
 		new ModuleRegisterHelper().register();
 
-		ServerPlayNetworking.registerGlobalReceiver(Constants.SLOT_SELECT_CHANNEL, new ExoModificationPlayChannelHandler());
+		ServerEntityEvents.EQUIPMENT_CHANGE.register(new EquipmentChangeEvent());
 	}
 }

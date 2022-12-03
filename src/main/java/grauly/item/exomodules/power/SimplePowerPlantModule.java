@@ -47,6 +47,16 @@ public class SimplePowerPlantModule extends ExoModuleItem {
     }
 
     @Override
+    public void onEquip(ItemStack modularItem, LivingEntity equipped) {
+
+    }
+
+    @Override
+    public void onUnEquip(ItemStack modularItem, LivingEntity equipped) {
+
+    }
+
+    @Override
     public int getArmor() {
         return 0;
     }

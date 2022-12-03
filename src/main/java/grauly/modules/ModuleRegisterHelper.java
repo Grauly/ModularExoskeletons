@@ -19,5 +19,8 @@ public class ModuleRegisterHelper implements RegistryHelper {
         AllItems.EXO_ITEM.addAllowedModule(AllItems.SIMPLE_POWER_PLANT_MODULE);
         AllItems.EXO_ITEM.addAllowedModule(AllItems.COMPACT_POWER_PLANT_MODULE);
         AllItems.EXO_ITEM.addAllowedModule(AllItems.EXPENSIVE_POWER_PLANT_MODULE);
+        AllItems.EXO_LEGGING.addAllowedModule(AllItems.EXO_SPEED_MODULE);
+        AllItems.EXO_LEGGING.addAllowedModule(AllItems.EXO_JUMP_MODULE);
+        AllItems.EXO_BOOTS.addAllowedModule(AllItems.EXO_STEP_ASSIST_MODULE);
     }
 }

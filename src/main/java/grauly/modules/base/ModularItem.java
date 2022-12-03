@@ -2,6 +2,7 @@ package grauly.modules.base;
 
 import grauly.ModularExos;
 import grauly.util.Constants;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
@@ -22,10 +23,11 @@ public interface ModularItem<M extends Module> {
     int getMaxCapacity();
 
     int getBaseEnergyGeneration();
+
     default int getTotalGeneratedEnergy(ItemStack stack) {
         ArrayList<M> modules = getInstalledModules(stack);
         int generatedEnergy = getBaseEnergyGeneration();
-        for(M module : modules) {
+        for (M module : modules) {
             generatedEnergy += module.getEnergyGeneration();
         }
         return generatedEnergy;
@@ -34,7 +36,7 @@ public interface ModularItem<M extends Module> {
     default int getUsedEnergy(ItemStack stack) {
         ArrayList<M> modules = getInstalledModules(stack);
         int usedEnergy = 0;
-        for(M module : modules) {
+        for (M module : modules) {
             usedEnergy += module.getEnergyUpkeepCost();
         }
         return usedEnergy;
@@ -69,27 +71,27 @@ public interface ModularItem<M extends Module> {
     }
 
     default void serializeModules(ArrayList<ItemStack> modules, ItemStack stack) {
-        serializeModules(modules,stack,UUID.randomUUID());
+        serializeModules(modules, stack, UUID.randomUUID());
     }
 
     default void serializeModules(ArrayList<ItemStack> modules, ItemStack stack, UUID assemblyUUID) {
         NbtList moduleList = new NbtList();
 
         for (ItemStack module : modules) {
-            if(!(module.isEmpty() || module.getItem().equals(Items.AIR) || module.equals(ItemStack.EMPTY))) {
+            if (!(module.isEmpty() || module.getItem().equals(Items.AIR) || module.equals(ItemStack.EMPTY))) {
                 NbtCompound compound = new NbtCompound();
                 module.writeNbt(compound);
                 moduleList.add(compound);
             }
         }
         NbtCompound UUIDCompound = new NbtCompound();
-        UUIDCompound.putUuid(Constants.ASSEMBLY_KEY,assemblyUUID);
+        UUIDCompound.putUuid(Constants.ASSEMBLY_KEY, assemblyUUID);
         stack.getOrCreateNbt().put(Constants.MODULES_LIST_KEY, moduleList);
         stack.getOrCreateNbt().put(Constants.MODULE_INSTALLATION, UUIDCompound);
     }
 
     default UUID getAssemblyUUID(ItemStack stack) {
-        if(stack.hasNbt()) {
+        if (stack.hasNbt()) {
             var nbt = stack.getNbt();
             var installDetails = nbt.getCompound(Constants.MODULE_INSTALLATION);
             return installDetails.getUuid(Constants.ASSEMBLY_KEY);
@@ -113,5 +115,13 @@ public interface ModularItem<M extends Module> {
             }
         }
         return stackModuleList;
+    }
+
+    default void onEquip(ItemStack stack, LivingEntity equipped) {
+        getInstalledModules(stack).forEach(m -> m.onEquip(stack, equipped));
+    }
+
+    default void onUnEqip(ItemStack stack, LivingEntity equipped) {
+        getInstalledModules(stack).forEach(m -> m.onUnEquip(stack, equipped));
     }
 }

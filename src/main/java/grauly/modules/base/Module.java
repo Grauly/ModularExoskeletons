@@ -9,5 +9,7 @@ public interface Module {
     int getEnergyGeneration();
     int getUseCost();
     String getDescription();
-    void moduleTick(ItemStack stack, LivingEntity entity);
+    void moduleTick(ItemStack modularItem, LivingEntity entity);
+    void onEquip(ItemStack modularItem, LivingEntity equipped);
+    void onUnEquip(ItemStack modularItem, LivingEntity equipped);
 }

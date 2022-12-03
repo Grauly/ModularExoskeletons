@@ -4,11 +4,13 @@ import grauly.modules.base.ModularItem;
 import grauly.modules.exo.ExoModule;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.ItemStack;
+import net.minecraft.text.Text;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
@@ -34,6 +36,8 @@ public class ExoArmorItem extends ArmorItem implements ModularItem<ExoModule> {
         }
     }
 
+
+
     @Override
     public int getMaxCapacity() {
         return 7;
@@ -47,6 +51,13 @@ public class ExoArmorItem extends ArmorItem implements ModularItem<ExoModule> {
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         super.inventoryTick(stack, world, entity, slot, selected);
+        if(entity instanceof LivingEntity livingEntity) {
+            if(slot == this.slot.getEntitySlotId()) {
+                this.getInstalledModules(stack).forEach(m -> m.moduleTick(stack,livingEntity));
+            } else {
+
+            }
+        }
     }
 
     @Override

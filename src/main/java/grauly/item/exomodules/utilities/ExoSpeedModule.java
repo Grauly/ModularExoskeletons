@@ -1,29 +1,30 @@
-package grauly.item.exomodules.armor;
+package grauly.item.exomodules.utilities;
 
 import grauly.item.exomodules.ExoModuleItem;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Pair;
 
 import java.util.ArrayList;
 
-public class ExoTierOneArmorModule extends ExoModuleItem {
+public class ExoSpeedModule extends ExoModuleItem {
 
-    public ExoTierOneArmorModule(Settings settings) {
+    public ExoSpeedModule(Settings settings) {
         super(settings);
     }
 
     @Override
     public int getSlotCost() {
-        return 4;
+        return 2;
     }
 
     @Override
     public int getEnergyUpkeepCost() {
-        return 0;
+        return 2;
     }
 
     @Override
@@ -38,7 +39,8 @@ public class ExoTierOneArmorModule extends ExoModuleItem {
 
     @Override
     public String getDescription() {
-        return Text.translatable("modularexos.module.armor.description").getString();
+
+        return Text.translatable("modularexos.module.speed.description").getString();
     }
 
     @Override
@@ -58,7 +60,7 @@ public class ExoTierOneArmorModule extends ExoModuleItem {
 
     @Override
     public int getArmor() {
-        return 1;
+        return 0;
     }
 
     @Override
@@ -68,6 +70,8 @@ public class ExoTierOneArmorModule extends ExoModuleItem {
 
     @Override
     public ArrayList<Pair<EntityAttribute, EntityAttributeModifier>> getAttributeModifiers() {
-        return super.getAttributeModifiers();
+        var list = super.getAttributeModifiers();
+        list.add(new Pair<>(EntityAttributes.GENERIC_MOVEMENT_SPEED,new EntityAttributeModifier("modularexos:exo_speed_boost",0.05, EntityAttributeModifier.Operation.ADDITION)));
+        return list;
     }
 }

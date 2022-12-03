@@ -10,6 +10,9 @@ import grauly.item.exomodules.armor.ExoTierTwoArmorModule;
 import grauly.item.exomodules.power.CompactPowerPlantModule;
 import grauly.item.exomodules.power.ExpensivePowerPlantModule;
 import grauly.item.exomodules.power.SimplePowerPlantModule;
+import grauly.item.exomodules.utilities.ExoJumpModule;
+import grauly.item.exomodules.utilities.ExoSpeedModule;
+import grauly.item.exomodules.utilities.ExoStepAssistModule;
 import grauly.util.RegistryHelper;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ArmorMaterial;
@@ -32,6 +35,9 @@ public class AllItems implements RegistryHelper {
     public static final ExoTierOneArmorModule EXO_TIER_ONE_ARMOR_MODULE = new ExoTierOneArmorModule(settings);
     public static final ExoTierTwoArmorModule EXO_TIER_TWO_ARMOR_MODULE = new ExoTierTwoArmorModule(settings);
     public static final ExoTierThreeArmorModule EXO_TIER_THREE_ARMOR_MODULE = new ExoTierThreeArmorModule(settings);
+    public static final ExoSpeedModule EXO_SPEED_MODULE = new ExoSpeedModule(settings);
+    public static final ExoJumpModule EXO_JUMP_MODULE = new ExoJumpModule(settings);
+    public static final ExoStepAssistModule EXO_STEP_ASSIST_MODULE = new ExoStepAssistModule(settings);
 
     public void register() {
         item("exo_item", EXO_ITEM);
@@ -48,6 +54,10 @@ public class AllItems implements RegistryHelper {
         item("basic_armor_module", EXO_TIER_ONE_ARMOR_MODULE);
         item("advanced_armor_module", EXO_TIER_TWO_ARMOR_MODULE);
         item("powered_armor_module", EXO_TIER_THREE_ARMOR_MODULE);
+
+        item("movement_speed_module", EXO_SPEED_MODULE);
+        item("jump_module", EXO_JUMP_MODULE);
+        item("step_assist_module", EXO_STEP_ASSIST_MODULE);
 
         item("modification_table", new BlockItem(AllBlocks.MODIFICATION_TABLE, settings));
         item("exo_modification_table", new BlockItem(AllBlocks.EXO_MODIFICATION_TABLE, settings));
