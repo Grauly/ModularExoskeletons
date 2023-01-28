@@ -13,6 +13,10 @@ import net.minecraft.text.Text;
 
 public class ExoStepAssistModule extends ExoModuleItem {
 
+    private static final float STEP_ASSIST_HEIGHT = 1.1f;
+    private static final float STEP_ASSIST_CLIENT_DEFAULT = 0.6f;
+    private static final float STEP_ASSIST_SERVER_DEFAULT = 1.0f;
+
     public ExoStepAssistModule(Settings settings) {
         super(settings);
     }
@@ -44,15 +48,19 @@ public class ExoStepAssistModule extends ExoModuleItem {
 
     @Override
     public void moduleTick(ItemStack stack, LivingEntity entity) {
-        /*if(!entity.world.isClient()) {
-            entity.sendMessage(Text.of(String.valueOf(entity.stepHeight)));
-        }*/
+        if(!entity.world.isClient()) {
+            if(entity.stepHeight != STEP_ASSIST_HEIGHT) {
+                changeStepHeight(entity,STEP_ASSIST_HEIGHT);
+            }
+        } else {
+            entity.stepHeight = STEP_ASSIST_HEIGHT;
+        }
     }
 
     @Override
     public void onEquip(ItemStack modularItem, LivingEntity equipped) {
         if(!equipped.world.isClient()) {
-            changeStepHeight(equipped,1.1f);
+            changeStepHeight(equipped,STEP_ASSIST_HEIGHT);
         }
     }
 
@@ -60,12 +68,13 @@ public class ExoStepAssistModule extends ExoModuleItem {
     public void onUnEquip(ItemStack modularItem, LivingEntity equipped) {
         if(!equipped.world.isClient()) {
             //client default
-            changeStepHeight(equipped, 0.6f);
+            changeStepHeight(equipped, STEP_ASSIST_CLIENT_DEFAULT);
             //server default
-            equipped.stepHeight = 1.0f;
+            equipped.stepHeight = STEP_ASSIST_SERVER_DEFAULT;
         }
     }
 
+    //change step height on both client and server
     private void changeStepHeight(LivingEntity entity, float height) {
         if(!entity.world.isClient()) {
             entity.stepHeight = height;
